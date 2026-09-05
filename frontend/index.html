@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RazorUAP — Agent-to-Agent (A2A) Commerce Gateway</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Top Navbar -->
+    <header class="navbar">
+        <div class="logo-group">
+            <div class="logo-badge">⚡ UAP</div>
+            <div>
+                <h1 class="brand-title">RazorUAP</h1>
+                <p class="brand-sub">Agent-to-Agent Commerce Gateway • Powered by Razorpay</p>
+            </div>
+        </div>
+        <div class="header-badges">
+            <span class="badge badge-pulse" id="gateway-mode">● Test Mode Active</span>
+            <span class="badge badge-success" id="ledger-badge">🔒 Ledger Integrity: 100% (SHA-256)</span>
+            <span class="badge badge-neutral" id="version-badge">v1.0.0</span>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Criteria Banner -->
+        <div class="criteria-bar">
+            <div class="criteria-item">
+                <span class="dot dot-green"></span>
+                <strong>Bounded:</strong> Max 15% Disc | Min 20% Margin | ₹25k Cap
+            </div>
+            <div class="criteria-item">
+                <span class="dot dot-blue"></span>
+                <strong>Explainable:</strong> Transparent Reasoning Token Logged
+            </div>
+            <div class="criteria-item">
+                <span class="dot dot-amber"></span>
+                <strong>Gated:</strong> 2-Phase HMAC-SHA256 User Gate
+            </div>
+            <div class="criteria-item">
+                <span class="dot dot-purple"></span>
+                <strong>Audited:</strong> Tamper-Evident Hash Chain
+            </div>
+        </div>
+
+        <!-- Section 1: Intent & Catalog Control -->
+        <section class="card glass-panel">
+            <div class="card-header">
+                <h2>1. Autonomous Buyer Agent Dispatcher</h2>
+                <span class="tag">NPCI-UAP Compliant</span>
+            </div>
+            <div class="intent-grid">
+                <div class="intent-input-col">
+                    <label for="intent-input">User Goal / Purchasing Intent:</label>
+                    <div class="input-with-button">
+                        <input type="text" id="intent-input" placeholder="e.g. Find me a mechanical keyboard and ergonomic wrist rest under ₹6,500" value="Get me the ApexPro Mechanical Keyboard and ErgoRest Wrist Rest">
+                        <button id="dispatch-btn" class="btn btn-primary">Dispatch Buyer Agent 🚀</button>
+                    </div>
+                    <div class="quick-chips">
+                        <span class="chip-label">Quick Scenarios:</span>
+                        <button class="chip" onclick="setScenario('keyboard')">⌨️ Keyboard + Wrist Rest Bundle</button>
+                        <button class="chip" onclick="setScenario('headphones')">🎧 ANC Headphones + Fast Charger</button>
+                        <button class="chip" onclick="setScenario('mouse')">🖱️ Vertical Ergonomic Mouse</button>
+                        <button class="chip chip-danger" onclick="setScenario('adversarial')">⚠️ Exploit Test (95% off injection)</button>
+                    </div>
+                </div>
+                <div class="budget-col">
+                    <div class="budget-header">
+                        <label for="budget-slider">User Wallet Budget Cap:</label>
+                        <span class="budget-val" id="budget-val">₹ 7,500</span>
+                    </div>
+                    <input type="range" id="budget-slider" min="2000" max="25000" step="500" value="7500">
+                    <p class="helper-text">Hard ceiling: Agent cannot exceed this without failing or downscaling.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Live Protocol Stream & Guardrail HUD -->
+        <div class="dual-panel-grid">
+            <!-- Left: A2A Protocol Stream -->
+            <section class="card">
+                <div class="card-header">
+                    <h2>2. Live A2A Protocol Stream</h2>
+                    <span class="live-pill">LIVE UAP JSON-RPC</span>
+                </div>
+                <div class="stream-container" id="stream-box">
+                    <div class="stream-placeholder">
+                        <p>Waiting for Agent dispatch...</p>
+                        <small>Click "Dispatch Buyer Agent" above to watch Autonomous Buyer Agent negotiate with Merchant Agent in real-time.</small>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Right: Financial Guardrail HUD (The Bar) -->
+            <section class="card">
+                <div class="card-header">
+                    <h2>3. Financial Guardrail Engine (The Bar)</h2>
+                    <span class="tag tag-secure" id="guardrail-status-pill">MONITORING</span>
+                </div>
+
+                <div class="guardrails-hud">
+                    <div class="metric-row">
+                        <div class="metric-box">
+                            <span class="metric-lbl">Raw MRP</span>
+                            <span class="metric-num" id="hud-mrp">₹ 0.00</span>
+                        </div>
+                        <div class="metric-box">
+                            <span class="metric-lbl">Offered Price</span>
+                            <span class="metric-num text-success" id="hud-offered">₹ 0.00</span>
+                        </div>
+                        <div class="metric-box">
+                            <span class="metric-lbl">Dynamic Discount</span>
+                            <span class="metric-num text-cyan" id="hud-discount">0.0%</span>
+                        </div>
+                        <div class="metric-box">
+                            <span class="metric-lbl">Gross Margin</span>
+                            <span class="metric-num text-amber" id="hud-margin">0.0%</span>
+                        </div>
+                    </div>
+
+                    <!-- Explainability Card -->
+                    <div class="explainability-box" id="explainability-box">
+                        <h3>📋 Explainability Token</h3>
+                        <p id="explain-summary" class="explain-text">No active quote under evaluation.</p>
+                        <div id="rule-checklist" class="rule-checklist"></div>
+                    </div>
+
+                    <!-- Gated Authorization Action Area -->
+                    <div class="gate-action-box" id="gate-box">
+                        <div class="gate-header">
+                            <span class="gate-icon" id="gate-icon">🔒</span>
+                            <div>
+                                <h4 id="gate-title">Gate Status: Inactive</h4>
+                                <p id="gate-desc">Awaiting negotiated quote to unlock gated authorization.</p>
+                            </div>
+                        </div>
+                        <button id="gate-btn" class="btn btn-success btn-full" disabled>Approve Purchase Gate & Generate Razorpay Order</button>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Section 3: Razorpay Payment & Verification Modal/Area -->
+        <section class="card" id="razorpay-section" style="display: none;">
+            <div class="card-header">
+                <h2>4. Razorpay Settlement & Signature Verification</h2>
+                <span class="tag tag-rzp">Razorpay Test Gateway</span>
+            </div>
+            <div class="payment-grid">
+                <div class="order-details-card">
+                    <h3>Order Payload Details</h3>
+                    <div class="kv-row"><span>Razorpay Order ID:</span> <code id="rzp-order-id">-</code></div>
+                    <div class="kv-row"><span>Amount:</span> <strong id="rzp-order-amount">₹ 0.00</strong></div>
+                    <div class="kv-row"><span>Currency:</span> <span>INR</span></div>
+                    <div class="kv-row"><span>Trace ID:</span> <code id="rzp-trace-id">-</code></div>
+                    <div class="kv-row"><span>Payment Link:</span> <a href="#" id="rzp-link-url" target="_blank" class="rzp-link">Open Razorpay Hosted Page ↗</a></div>
+                </div>
+                <div class="payment-action-card">
+                    <h3>Simulate Razorpay Webhook Payment Capture</h3>
+                    <p>In test mode, simulate successful UPI payment to trigger Razorpay webhook verification and blockchain audit ledger commit.</p>
+                    <button id="simulate-pay-btn" class="btn btn-rzp">Simulate Successful UPI Payment (₹ <span id="pay-btn-amt">0</span>) 💳</button>
+                    <div id="payment-success-banner" class="success-banner" style="display: none;">
+                        <h4>✅ Payment Captured & Signature Verified</h4>
+                        <div class="kv-row"><span>Payment ID:</span> <code id="captured-pay-id">-</code></div>
+                        <div class="kv-row"><span>HMAC Signature:</span> <code id="captured-sig" class="code-truncate">-</code></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Handled Failure Lab -->
+        <section class="card failure-lab-card">
+            <div class="card-header">
+                <h2>5. Handled Failure Lab (Buildathon Demonstration)</h2>
+                <span class="tag tag-warning">Resilience & Guardrails</span>
+            </div>
+            <p class="section-desc">Razorpay requires demonstrating handled failures. Test the 3 failure modes with 1-click below:</p>
+            <div class="failure-buttons-grid">
+                <button class="btn btn-outline" onclick="runFailureTest('budget_breach')">
+                    <strong>1. Budget Cap Breach</strong>
+                    <small>Buyer requests ₹8.4k on a ₹4k budget → Auto-downscales basket</small>
+                </button>
+                <button class="btn btn-outline" onclick="runFailureTest('stockout')">
+                    <strong>2. Inventory Stockout Collision</strong>
+                    <small>Stock drops to 0 mid-flight → Halts payment & auto-routes</small>
+                </button>
+                <button class="btn btn-outline" onclick="runFailureTest('adversarial_exploit')">
+                    <strong>3. Adversarial Prompt Injection</strong>
+                    <small>Attempting 95% unauthorized discount → Guardrail trips</small>
+                </button>
+            </div>
+            <div id="failure-output-box" class="failure-output" style="display: none;">
+                <h4 id="fail-title">Scenario Result</h4>
+                <pre id="fail-json"></pre>
+            </div>
+        </section>
+
+        <!-- Section 5: Cryptographic Audit Trail Explorer -->
+        <section class="card">
+            <div class="card-header">
+                <h2>6. Cryptographically Chained Audit Trail</h2>
+                <button class="btn btn-small" onclick="refreshAuditTrail()">Refresh Chain 🔄</button>
+            </div>
+            <div class="table-responsive">
+                <table class="audit-table">
+                    <thead>
+                        <tr>
+                            <th>Block #</th>
+                            <th>Time (UTC)</th>
+                            <th>Actor</th>
+                            <th>Event Type</th>
+                            <th>Trace ID</th>
+                            <th>Block Hash (SHA-256)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="audit-tbody">
+                        <tr><td colspan="6" class="text-center">Loading audit ledger...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>RazorUAP — Agent-to-Agent Commerce Gateway | Built for Razorpay AI Buildathon 2026</p>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
